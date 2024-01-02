@@ -64,9 +64,9 @@ You are all set! Open [localhost:4000](http://localhost:4000/) to see the app an
 
 ### API Endpoints
 
-## Order Routes
+#### Order Routes
 
-# Create Order
+##### Create Order
 
 `POST |  /api/v1/users/register` 
 | Key             | Value                 |
