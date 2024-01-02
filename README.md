@@ -1,9 +1,6 @@
 <h1 align="center">Fanztar✨️</h1>
 
 <p align="center">
-<!-- <a href="https://github.com/Devansh-365/fanztar-ag/blob/master/LICENSE" target="blank"> -->
-<img src="https://img.shields.io/github/license/Devansh-365/fanztar-ag?style=flat-square" alt="fanztar-ag licence" />
-</a>
 <a href="https://github.com/Devansh-365/fanztar-ag/fork" target="blank">
 <img src="https://img.shields.io/github/forks/Devansh-365/fanztar-ag?style=flat-square" alt="fanztar-ag forks"/>
 </a>
@@ -68,7 +65,7 @@ You are all set! Open [localhost:4000](http://localhost:4000/) to see the app an
 
 ##### 1. Create Order
 
-`POST |  /api/v1/users/register` 
+`POST |  /api/orders` 
 | Key             | Value                 |
 | --------------  | --------------------  |
 | components      | ["A","I","D","G","K"] |
