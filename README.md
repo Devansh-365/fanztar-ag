@@ -66,10 +66,18 @@ You are all set! Open [localhost:4000](http://localhost:4000/) to see the app an
 
 #### Order Routes
 
-##### Create Order
+##### 1. Create Order
 
 `POST |  /api/v1/users/register` 
 | Key             | Value                 |
 | --------------  | --------------------  |
 | components      | ["A","I","D","G","K"] |
+
+`Response` 
+| Key             | Value                 |
+| --------------  | --------------------  |
+| id              | "some_id"             |
+| total           | 138.66                |
+| components      | ["LED Screen","Android OS","Wide-Angle Camera","Micro-USB Port", "Metallic Body"]  |
+
 
