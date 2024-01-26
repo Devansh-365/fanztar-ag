@@ -1,0 +1,19 @@
+[
+  { "code": "A", "name": "LED Screen", "price": 10.28, "stock": 2 },
+  { "code": "B", "name": "OLED Screen", "price": 24.07, "stock": 1 },
+  { "code": "C", "name": "AMOLED Screen", "price": 33.3, "stock": 1 },
+  { "code": "D", "name": "Wide-Angle Camera", "price": 25.94, "stock": 2 },
+  {
+    "code": "E",
+    "name": "Ultra-Wide-Angle Camera",
+    "price": 32.39,
+    "stock": 1
+  },
+  { "code": "F", "name": "USB-C Port", "price": 18.77, "stock": 1 },
+  { "code": "G", "name": "Micro-USB Port", "price": 15.13, "stock": 3 },
+  { "code": "H", "name": "Lightning Port", "price": 20, "stock": 1 },
+  { "code": "I", "name": "Android OS", "price": 42.31, "stock": 1 },
+  { "code": "J", "name": "iOS OS", "price": 45, "stock": 1 },
+  { "code": "K", "name": "Metallic Body", "price": 45, "stock": 2 },
+  { "code": "L", "name": "Plastic Body", "price": 30, "stock": 1 }
+]

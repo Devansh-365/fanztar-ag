@@ -1,10 +1,13 @@
 import { randomUUID } from "crypto";
 import express from "express";
+import fs from "fs";
+import path from "path";
 
 interface Component {
   code: string;
   name: string;
   price: number;
+  stock: number;
 }
 
 interface Order {
@@ -13,20 +16,15 @@ interface Order {
   parts: Component[];
 }
 
-const componentsInit: Component[] = [
-  { code: "A", name: "LED Screen", price: 10.28 },
-  { code: "B", name: "OLED Screen", price: 24.07 },
-  { code: "C", name: "AMOLED Screen", price: 33.3 },
-  { code: "D", name: "Wide-Angle Camera", price: 25.94 },
-  { code: "E", name: "Ultra-Wide-Angle Camera", price: 32.39 },
-  { code: "F", name: "USB-C Port", price: 18.77 },
-  { code: "G", name: "Micro-USB Port", price: 15.13 },
-  { code: "H", name: "Lightning Port", price: 20.0 },
-  { code: "I", name: "Android OS", price: 42.31 },
-  { code: "J", name: "iOS OS", price: 45.0 },
-  { code: "K", name: "Metallic Body", price: 45.0 },
-  { code: "L", name: "Plastic Body", price: 30.0 },
-];
+let componentsInit: Component[] = [];
+try {
+  const filePath = path.join(__dirname, "../data/component.data.json");
+  const rawData = fs.readFileSync(filePath, "utf8");
+  componentsInit = JSON.parse(rawData);
+  // console.log("USS", componentsInit);
+} catch (err) {
+  console.error(err);
+}
 
 function getCategoryFromName(name: string): string {
   if (name.includes("Screen")) {
@@ -50,25 +48,39 @@ export const createOrder = async (
 ) => {
   try {
     const { components: componentCodes } = req.body;
+    // console.log("COMPONENTS INIT: ", componentsInit);
 
     if (!Array.isArray(componentCodes) || componentCodes.length !== 5) {
       return res.status(400).send({ error: "Invalid input" });
     }
 
+    const errors: any = [];
     const components: any = componentCodes.map((code) => {
       const component = componentsInit.find(
         (component: Component) => component.code === code
       );
       if (!component) {
-        return res.status(400).send({ error: `Component not found: ${code}` });
+        errors.push(`Component not found: ${code}`);
+        return null;
       }
+      if (component.stock <= 0) {
+        errors.push(`Component stock not availaible: ${code}`);
+        return null;
+      }
+      component.stock -= 1;
       return component;
     });
+
+    if (errors.length > 0) {
+      return res.status(400).send({ errors });
+    }
 
     const componentsWithCategories = components.map((component: Component) => ({
       ...component,
       category: getCategoryFromName(component.name),
     }));
+
+    // console.log("Components With Categories: ", componentsWithCategories);
 
     const categories = componentsWithCategories.reduce(
       (acc: any, component: any) => {
@@ -77,6 +89,8 @@ export const createOrder = async (
       },
       { screen: [], camera: [], port: [], os: [], body: [] }
     );
+
+    // console.log("Categories: ", categories);
 
     for (const category in categories) {
       if (categories[category].length > 1) {
@@ -94,9 +108,22 @@ export const createOrder = async (
     const order: Order = {
       id: randomUUID(),
       total,
-      parts: components.map((component: Component) => component.name),
+      parts: components.map((component: Component) => ({
+        ...component,
+      })),
     };
 
+    const filePath = path.join(__dirname, "../data/component.data.json");
+    componentsInit = componentsInit.map((component: Component) => {
+      const updatedComponent = components.find(
+        (updatedComponent: Component) =>
+          updatedComponent.code === component.code
+      );
+      return updatedComponent ? updatedComponent : component;
+    });
+    fs.writeFileSync(filePath, JSON.stringify(componentsInit));
+    // const rawData = fs.readFileSync(filePath, "utf8");
+    // console.log("TWO: ", JSON.parse(rawData));
     res.status(201).send(order);
   } catch (error) {
     console.log(error);
